@@ -51,11 +51,11 @@ const printPatternMethod = (n) => {
 
     // Loop through each cell in the row
     for (let j = 0; j < 2 * n - 1; j++) {
-      // Calculate the positions of the cell in the row and column relative to the center cell
-      const left = i; // Position of cell in the row
-      const top = j; // Position of cell in the column
-      const right = 2 * n - 2 - i; // Position of cell in the row (calculated from the right side)
-      const bottom = 2 * n - 2 - j; // Position of cell in the column (calculated from the bottom side)
+      // Calculate the positions of the cell in the row and column relative to the border
+      const left = j; // Position of cell
+      const top = i; // Position of cell
+      const right = 2 * n - 2 - j; // Position of cell
+      const bottom = 2 * n - 2 - i; // Position of cell
 
       // Find the minimum value among these positions
       const minPositionValue = Math.min(left, top, right, bottom);
