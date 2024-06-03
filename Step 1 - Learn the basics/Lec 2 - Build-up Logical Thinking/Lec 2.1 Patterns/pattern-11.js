@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-11-binary-number-triangle-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-11-binary-number-triangle-pattern/
  */
 
 /*  ✅ Problem Statement: 

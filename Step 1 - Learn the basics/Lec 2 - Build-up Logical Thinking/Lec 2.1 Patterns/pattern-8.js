@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-8-inverted-star-pyramid/
+ * @article : https://takeuforward.org/pattern/pattern-8-inverted-star-pyramid/
  */
 
 /*  ✅ Problem Statement: 

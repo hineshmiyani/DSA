@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/data-structure/count-digits-in-a-number/
+ * @article : https://takeuforward.org/data-structure/count-digits-in-a-number/
  */
 
 /*

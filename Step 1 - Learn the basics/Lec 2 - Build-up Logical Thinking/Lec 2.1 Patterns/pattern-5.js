@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-5-inverted-right-pyramid/
+ * @article : https://takeuforward.org/pattern/pattern-5-inverted-right-pyramid/
  */
 
 /*  ✅ Problem Statement: 

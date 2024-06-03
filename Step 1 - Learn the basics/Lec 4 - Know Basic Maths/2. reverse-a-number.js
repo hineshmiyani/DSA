@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/c-programs/reverse-a-number-in-c/
+ * @article : https://takeuforward.org/c-programs/reverse-a-number-in-c/
  */
 
 /*

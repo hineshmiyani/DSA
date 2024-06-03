@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/data-structure/factorial-of-a-number-iterative-and-recursive/
+ * @article : https://takeuforward.org/data-structure/factorial-of-a-number-iterative-and-recursive/
  */
 
 /*

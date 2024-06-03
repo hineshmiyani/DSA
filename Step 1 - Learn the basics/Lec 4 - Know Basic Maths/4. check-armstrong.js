@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/maths/check-if-a-number-is-armstrong-number-or-not/
+ * @article : https://takeuforward.org/maths/check-if-a-number-is-armstrong-number-or-not/
  */
 
 /*

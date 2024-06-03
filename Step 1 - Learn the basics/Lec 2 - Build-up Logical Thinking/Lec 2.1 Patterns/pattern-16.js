@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-16-alpha-ramp-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-16-alpha-ramp-pattern/
  */
 
 /*  ✅ Problem Statement: 

@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-21-hollow-rectangle-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-21-hollow-rectangle-pattern/
  */
 
 /*  ✅ Problem Statement: 

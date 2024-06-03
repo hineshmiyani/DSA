@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-19-symmetric-void-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-19-symmetric-void-pattern/
  */
 
 /*  ✅ Problem Statement: 

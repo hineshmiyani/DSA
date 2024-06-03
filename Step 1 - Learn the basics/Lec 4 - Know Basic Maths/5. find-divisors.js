@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/data-structure/print-all-divisors-of-a-given-number/
+ * @article : https://takeuforward.org/data-structure/print-all-divisors-of-a-given-number/
  */
 
 /*

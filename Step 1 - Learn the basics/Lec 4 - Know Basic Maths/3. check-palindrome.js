@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/data-structure/check-if-a-number-is-palindrome-or-not/
+ * @article : https://takeuforward.org/data-structure/check-if-a-number-is-palindrome-or-not/
  */
 
 /*

@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-15-reverse-letter-triangle-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-15-reverse-letter-triangle-pattern/
  */
 
 /*  ✅ Problem Statement: 

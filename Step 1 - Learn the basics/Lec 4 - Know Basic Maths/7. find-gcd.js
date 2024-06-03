@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/data-structure/find-gcd-of-two-numbers/
+ * @article : https://takeuforward.org/data-structure/find-gcd-of-two-numbers/
  */
 
 /*

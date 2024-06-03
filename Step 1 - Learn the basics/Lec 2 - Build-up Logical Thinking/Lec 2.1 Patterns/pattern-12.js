@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-12-number-crown-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-12-number-crown-pattern/
  */
 
 /*  ✅ Problem Statement: 

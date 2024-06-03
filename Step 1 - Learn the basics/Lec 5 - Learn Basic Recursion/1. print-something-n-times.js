@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/recursion/introduction-to-recursion-understand-recursion-by-printing-something-n-times/
+ * @article : https://takeuforward.org/recursion/introduction-to-recursion-understand-recursion-by-printing-something-n-times/
  */
 
 /*
@@ -7,7 +7,7 @@
 
   Write a recursive code for printing numbers from 0 to 3 
 
-  */
+*/
 
 let number = 0;
 

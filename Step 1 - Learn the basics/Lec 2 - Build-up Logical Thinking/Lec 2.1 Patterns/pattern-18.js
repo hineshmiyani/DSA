@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-18-alpha-triangle-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-18-alpha-triangle-pattern/
  */
 
 /*  ✅ Problem Statement: 

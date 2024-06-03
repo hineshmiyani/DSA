@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/arrays/print-fibonacci-series-up-to-nth-term/
+ * @article : https://takeuforward.org/arrays/print-fibonacci-series-up-to-nth-term/
  */
 
 /*

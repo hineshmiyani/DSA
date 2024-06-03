@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-7-star-pyramid/
+ * @article : https://takeuforward.org/pattern/pattern-7-star-pyramid/
  */
 
 /*  ✅ Problem Statement: 

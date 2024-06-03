@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/recursion/print-name-n-times-using-recursion/
+ * @article : https://takeuforward.org/recursion/print-name-n-times-using-recursion/
  */
 
 /*

@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/data-structure/sum-of-first-n-natural-numbers/
+ * @article : https://takeuforward.org/data-structure/sum-of-first-n-natural-numbers/
  */
 
 /*

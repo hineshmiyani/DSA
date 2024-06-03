@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-9-diamond-star-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-9-diamond-star-pattern/
  */
 
 /*  ✅ Problem Statement: 

@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-13-increasing-number-triangle-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-13-increasing-number-triangle-pattern/
  */
 
 /*  ✅ Problem Statement: 

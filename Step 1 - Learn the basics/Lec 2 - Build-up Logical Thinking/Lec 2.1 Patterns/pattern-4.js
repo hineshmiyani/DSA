@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-4-right-angled-number-pyramid-ii/
+ * @article : https://takeuforward.org/pattern/pattern-4-right-angled-number-pyramid-ii/
  */
 
 /*  ✅ Problem Statement: 

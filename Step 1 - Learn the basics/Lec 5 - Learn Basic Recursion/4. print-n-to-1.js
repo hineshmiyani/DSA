@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/recursion/print-n-to-1-using-recursion/
+ * @article : https://takeuforward.org/recursion/print-n-to-1-using-recursion/
  */
 
 /*

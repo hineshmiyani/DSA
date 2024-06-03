@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/data-structure/pattern-1-rectangular-star-pattern/
+ * @article : https://takeuforward.org/data-structure/pattern-1-rectangular-star-pattern/
  */
 
 /*  ✅ Problem Statement: 

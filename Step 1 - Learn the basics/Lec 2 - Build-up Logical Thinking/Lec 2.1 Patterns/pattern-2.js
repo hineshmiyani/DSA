@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-2-right-angled-triangle-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-2-right-angled-triangle-pattern/
  */
 
 /*  ✅ Problem Statement: 

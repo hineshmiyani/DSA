@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-17-alpha-hill-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-17-alpha-hill-pattern/
  */
 
 /*  ✅ Problem Statement: 

@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-22-the-number-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-22-the-number-pattern/
  */
 
 /*  ✅ Problem Statement: 

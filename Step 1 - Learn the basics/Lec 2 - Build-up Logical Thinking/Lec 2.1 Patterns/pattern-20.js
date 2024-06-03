@@ -1,5 +1,5 @@
 /**
- * 👉 Article Link: https://takeuforward.org/pattern/pattern-20-symmetric-butterfly-pattern/
+ * @article : https://takeuforward.org/pattern/pattern-20-symmetric-butterfly-pattern/
  */
 
 /*  ✅ Problem Statement: 
