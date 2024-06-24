@@ -1,5 +1,6 @@
 /**
- * @article : https://takeuforward.org/data-structure/quick-sort-algorithm/
+ * @article  : https://takeuforward.org/data-structure/quick-sort-algorithm/
+ * @question : https://www.geeksforgeeks.org/problems/quick-sort/1
  */
 
 /*

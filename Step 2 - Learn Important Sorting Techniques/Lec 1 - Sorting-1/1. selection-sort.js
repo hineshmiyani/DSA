@@ -1,5 +1,6 @@
 /**
- * @article : https://takeuforward.org/sorting/selection-sort-algorithm/
+ * @article  : https://takeuforward.org/sorting/selection-sort-algorithm/
+ * @question : https://www.geeksforgeeks.org/problems/selection-sort/1
  */
 
 /*

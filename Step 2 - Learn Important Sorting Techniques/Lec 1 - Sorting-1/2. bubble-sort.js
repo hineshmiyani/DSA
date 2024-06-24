@@ -1,5 +1,6 @@
 /**
- * @article : https://takeuforward.org/data-structure/bubble-sort-algorithm/
+ * @article  : https://takeuforward.org/data-structure/bubble-sort-algorithm/
+ * @question : https://www.geeksforgeeks.org/problems/bubble-sort/1
  */
 
 /*
