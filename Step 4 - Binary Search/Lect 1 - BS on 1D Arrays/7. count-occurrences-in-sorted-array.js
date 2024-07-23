@@ -1,24 +1,22 @@
 /**
- * @article  : https://takeuforward.org/arrays/first-and-last occurrence-in-sorted-array/
- * @question : https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+ * @article  : https://takeuforward.org/data-structure/count-occurrences-in-sorted-array/
+ * @question : https://www.geeksforgeeks.org/problems/number-of-occurrence2259/1
  */
 
 /*
   ✅ Problem Statement: 
 
-  Given a sorted array of N integers, write a program to find the index of the first and last occurrence of the target key. If the target is not found  then return [-1, -1].
-
-  Note: Consider 0 based indexing
+  You are given a sorted array containing N integers and a number X, you have to find the occurrences of X in the given array.
 
   Example 1:
-  Input: N = 7, target=13, array[] = {3,4,13,13,13,20,40}
-  Output: [2, 4]
-  Explanation: As the target value is 13 , it appears for the first time at index number 2.
+  Input: N = 7,  X = 3 , array[] = {2, 2 , 3 , 3 , 3 , 3 , 4}
+  Output: 4
+  Explanation: 3 is occurring 4 times in the given array so it is our answer.
 
   Example 2:
-  Input: N = 7, target=60, array[] = {3,4,13,13,13,20,40}
-  Output: [-1, -1]
-  Explanation: Target value 60 is not present in the array 
+  Input: N = 8,  X = 2 , array[] = {1, 1, 2, 2, 2, 2, 2, 3}
+  Output: 5
+  Explanation: 2 is occurring 5 times in the given array so it is our answer 
 
 */
 
@@ -99,27 +97,27 @@ const getUpperBound = (arr, target) => {
   return upperBoundIndex;
 };
 
-// Function to find the first and last occurrence of a target value in a sorted array.
-const getFirstAndLastOccurrenceSolution1 = (arr, target) => {
+// Function to count occurrences of a target value in a sorted array.
+const countOccurrencesSolution1 = (arr, target) => {
   // Call the getLowerBound function to find the first occurrence of the target.
+  // This function returns the index of the first element that is greater than or equal to the target.
   const lowerBound = getLowerBound(arr, target);
 
   // If the lower bound index is equal to the length of the array or the element at the lower bound index is not equal to the target,
-  // it means the target is not present in the array. Return -1 for both first and last occurrences.
+  // it means the target is not present in the array. Return 0 in this case.
   if (lowerBound === arr.length || arr[lowerBound] !== target) {
-    return { first: -1, last: -1 };
+    return 0;
   }
 
   // Call the getUpperBound function to find the index of the first element greater than the target.
+  // This function returns the index of the first element that is strictly greater than the target.
   const upperBound = getUpperBound(arr, target);
 
-  // Return an object containing the first and last occurrence of the target.
-  // The first occurrence is the lower bound index.
-  // The last occurrence is the upper bound index minus one.
-  return {
-    first: lowerBound,
-    last: upperBound - 1,
-  };
+  // Calculate the number of occurrences of the target in the array.
+  // The number of occurrences is given by the difference between the upper bound and the lower bound.
+  // Since the upper bound is the index of the first element greater than the target, we subtract 1 from it.
+  // Adding 1 to the result to include the lower bound element itself.
+  return upperBound - 1 - lowerBound + 1;
 };
 
 // Optimal Solution - 2
@@ -189,67 +187,60 @@ const getLastOccurrence = (arr, target) => {
   return lastOccurrence;
 };
 
-// Function to find both the first and last occurrences of a target value in a sorted array
-const getFirstAndLastOccurrenceSolution2 = (arr, target) => {
-  // Find the first occurrence of the target value
+// Function to count occurrences of a target value in a sorted array.
+const countOccurrencesSolution2 = (arr, target) => {
+  // Find the first occurrence of the target value using binary search
   const firstOccurrence = getFirstOccurrence(arr, target);
 
-  // If the target value is not found, return -1 for both first and last occurrences
+  // If the target value is not found in the array, return 0
   if (firstOccurrence === -1) {
-    return {
-      first: -1,
-      last: -1,
-    };
+    return 0;
   }
 
-  // Find the last occurrence of the target value
+  // Find the last occurrence of the target value using binary search
   const lastOccurrence = getLastOccurrence(arr, target);
 
-  // Return an object containing both the first and last occurrences
-  return {
-    first: firstOccurrence,
-    last: lastOccurrence,
-  };
+  // Calculate the number of occurrences by subtracting the indices of the first and last occurrences
+  // and adding 1 (since both indices are inclusive)
+  return lastOccurrence - firstOccurrence + 1;
 };
 
 // Example 1 Input
-const arr1 = [3, 4, 13, 13, 13, 20, 40];
-const target1 = 13;
+const arr1 = [2, 2, 3, 3, 3, 3, 4];
+const target1 = 3;
 
 // Example 2 Input
-const arr2 = [3, 4, 13, 13, 13, 20, 40];
-const target2 = 60;
+const arr2 = [1, 1, 2, 2, 2, 2, 2, 3];
+const target2 = 2;
 
 console.log("\n ------------- Solution 1: ------------- \n");
 console.log("\n ------------- Example 1: ------------- \n");
 console.log(
-  "The first and last occurrence are: ",
-  getFirstAndLastOccurrenceSolution1(arr1, target1)
+  "The number of occurrences is: ",
+  countOccurrencesSolution1(arr1, target1)
 );
 console.log("\n ------------- Example 2: ------------- \n");
 console.log(
-  "The first and last occurrence are: ",
-  getFirstAndLastOccurrenceSolution1(arr2, target2)
+  "The number of occurrences is: ",
+  countOccurrencesSolution1(arr2, target2)
 );
 
-// Time Complexity: O(2 * log n) where N = size of the given array.
-// Reason: We are basically using the binary search algorithm twice.
-
+// Time Complexity: O(2 * log n)
 // Space Complexity: O(1)
 
 console.log("\n ------------- Solution 2: ------------- \n");
 console.log("\n ------------- Example 1: ------------- \n");
 console.log(
-  "The first and last occurrence are: ",
-  getFirstAndLastOccurrenceSolution2(arr1, target1)
+  "The number of occurrences is: ",
+  countOccurrencesSolution2(arr1, target1)
 );
 console.log("\n ------------- Example 2: ------------- \n");
 console.log(
-  "The first and last occurrence are: ",
-  getFirstAndLastOccurrenceSolution2(arr2, target2)
+  "The number of occurrences is: ",
+  countOccurrencesSolution2(arr2, target2)
 );
 
-// Time Complexity: O(2 * log n) where N = size of the given array.
+// Time Complexity: O(2*logN), where N = size of the given array.
 // Reason: We are basically using the binary search algorithm twice.
 
-// Space Complexity: O(1)
+// Space Complexity: O(1) as we are using no extra space.
