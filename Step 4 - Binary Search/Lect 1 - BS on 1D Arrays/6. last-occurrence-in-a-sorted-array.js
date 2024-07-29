@@ -1,5 +1,5 @@
 /**
- * @article  : https://takeuforward.org/arrays/first-and-last occurrence-in-sorted-array/
+ * @article  : https://takeuforward.org/data-structure/last-occurrence-in-a-sorted-array/
  * @question : https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
  */
 
