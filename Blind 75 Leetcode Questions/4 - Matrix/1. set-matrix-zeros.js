@@ -101,6 +101,30 @@ const zeroMatrixSolution2 = (matrix) => {
 };
 
 // Optimal Solution
+
+/*
+Approach:
+  1. Initialization:
+    - Get the number of rows (`n`) and columns (`m`) in the matrix.
+    - Initialize a variable `col0` to track if the first column should be zeroed.
+
+  2. First Pass (Marking):
+    - Iterate through each element of the matrix.
+    - If an element is 0, mark the first element of its row and column.
+    - If the element is in the first column, set `col0` to 0.
+
+  3. Second Pass (Setting Zeros):
+    - Iterate through the matrix starting from the second row and second column.
+    - If the first element of the row or column is marked (i.e., 0), set the current element to 0.
+
+  4. Handle First Row:
+    - If the first element of the first row is 0, set the entire first row to 0.
+
+  5. Handle First Column:
+    - If `col0` is 0, set the entire first column to 0.
+
+  6. Return the modified matrix.
+*/
 const zeroMatrixSolution3 = (matrix) => {
   // Get the number of rows (n) and columns (m) in the matrix
   const n = matrix.length;
