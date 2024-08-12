@@ -30,13 +30,13 @@
 
   1. Encoding:
      - The `encode` method takes a list of strings and converts it into a single string.
-     - For each string in the list, we prepend its length followed by a special   character (e.g., `#`) to the string itself.
+     - For each string in the list, we prepend its length followed by a special character (e.g., `#`) to the string itself.
      - This ensures that during decoding, we can easily determine the length of each  original string.
      - Example: ["leet", "code"] -> "4#leet4#code"
   
   2. Decoding:
      - The `decode` method takes the encoded string and converts it back to the   original list of strings.
-     - We iterate through the encoded string, reading the length of each original   string (up to the `#` character).
+     - We iterate through the encoded string, reading the length of each original string (up to the `#` character).
      - Using this length, we extract the corresponding substring and add it to the  result list.
      - Example: "4#leet4#code" -> ["leet", "code"] 
 */
