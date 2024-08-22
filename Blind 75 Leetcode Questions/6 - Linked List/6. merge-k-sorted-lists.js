@@ -30,7 +30,7 @@ const { MinPriorityQueue } = require("@datastructures-js/priority-queue");
   Input: lists = []
   Output: []
 
-  Example 2:
+  Example 3:
   Input: lists = [[]]
   Output: []
   
