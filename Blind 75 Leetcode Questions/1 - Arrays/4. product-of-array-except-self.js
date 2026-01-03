@@ -90,36 +90,98 @@ const productExceptSelfSolution2 = (arr) => {
 };
 
 /**
- * Computes the product of all elements in the array except the element at the current index.
- * This function does not use division and runs in O(n) time complexity.
+ * Approach:
+ * ----------
+ * We break the problem into TWO passes:
+ *
+ * 1) Prefix pass:
+ *    For each index i, store the product of all elements
+ *    to the LEFT of i.
+ *
+ * 2) Suffix pass:
+ *    Traverse from the right and multiply each index
+ *    with the product of all elements to the RIGHT of i.
+ *
+ * Final result:
+ * productExceptSelf[i] = (product of elements to the left of i)
+ *                      * (product of elements to the right of i)
+ *
+ * This avoids division and keeps the solution optimal.
+ *
+ * Time Complexity: O(n)
+ * Space Complexity: O(1) extra space (output array excluded)
  */
-const productExceptSelfSolution3 = (arr) => {
-  // Initialize the result array with the same length as the input array, filled with 1s.
-  const result = new Array(arr.length).fill(1);
+const productExceptSelfSolution3 = (nums) => {
+  // Step 1: Create result array initialized with 1
+  // This array will store the final answer
+  // Initializing with 1 allows safe multiplication later
+  const productArray = Array(nums.length).fill(1);
 
-  // Initialize prefix product to 1.
-  let prefix = 1;
-  // Traverse the array from left to right to calculate the prefix products.
-  for (let index = 0; index < arr.length; index++) {
-    // Set the current index of result to the current prefix product.
-    result[index] = prefix;
-    // Update the prefix product by multiplying it with the current element of the input array.
-    prefix = prefix * arr[index];
+  /**
+   * PREFIX PASS
+   * -----------
+   * productArray[i] will contain the product of all elements
+   * to the LEFT of index i.
+   *
+   * Example:
+   * nums = [1, 2, 3, 4]
+   *
+   * After prefix pass:
+   * productArray = [1, 1, 2, 6]
+   *
+   * Explanation:
+   * index 0 -> no left elements -> 1
+   * index 1 -> 1
+   * index 2 -> 1 * 2 = 2
+   * index 3 -> 1 * 2 * 3 = 6
+   */
+  for (let i = 1; i < nums.length; i++) {
+    productArray[i] = productArray[i - 1] * nums[i - 1];
   }
 
-  // Initialize suffix product to 1.
+  /**
+   * SUFFIX PASS
+   * -----------
+   * We now multiply each index with the product of all elements
+   * to the RIGHT of that index.
+   *
+   * Instead of using another array (which would increase space),
+   * we use a single variable `suffix` to keep track of the
+   * running product from the right.
+   */
   let suffix = 1;
-  // Traverse the array from right to left to calculate the suffix products.
-  for (let index = arr.length - 1; index >= 0; index--) {
-    // Multiply the current index of result with the current suffix product.
-    // Handle the case where the result is -0 by converting it to 0.
-    result[index] = result[index] * suffix !== -0 ? result[index] * suffix : 0;
-    // Update the suffix product by multiplying it with the current element of the input array.
-    suffix = suffix * arr[index];
+
+  /**
+   * Traverse from right to left
+   *
+   * Example continuation:
+   * nums = [1, 2, 3, 4]
+   * productArray (from prefix) = [1, 1, 2, 6]
+   *
+   * Iteration steps:
+   *
+   * i = 2:
+   *   suffix = 1 * 4 = 4
+   *   productArray[2] = 2 * 4 = 8
+   *
+   * i = 1:
+   *   suffix = 4 * 3 = 12
+   *   productArray[1] = 1 * 12 = 12
+   *
+   * i = 0:
+   *   suffix = 12 * 2 = 24
+   *   productArray[0] = 1 * 24 = 24
+   *
+   * Final output:
+   * [24, 12, 8, 6]
+   */
+  for (let i = nums.length - 2; i >= 0; i--) {
+    suffix = suffix * nums[i + 1];
+    productArray[i] = productArray[i] * suffix;
   }
 
-  // Return the final result array.
-  return result;
+  // Step 3: Return the final result
+  return productArray;
 };
 
 // Example 1 Input
