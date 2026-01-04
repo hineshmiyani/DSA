@@ -46,6 +46,40 @@ const maxProductSubArraySolution1 = (arr) => {
 };
 
 // Optimal Solution
+
+/**
+ * Approach (Prefix + Suffix Scan):
+ * --------------------------------
+ * We traverse the array from BOTH directions:
+ *
+ * 1) Prefix traversal (left → right)
+ *    - Tracks the product of elements ending at current index
+ *
+ * 2) Suffix traversal (right → left)
+ *    - Tracks the product of elements starting at current index
+ *
+ * Why this works:
+ * - If total number of negatives is EVEN → full product is max
+ * - If total number of negatives is ODD → excluding either
+ *   the first or last negative gives max product
+ * - Prefix + Suffix together cover BOTH cases
+ *
+ * Zeros:
+ * - Zero resets the product
+ * - After zero, we restart multiplication from 1
+ *
+ * -------------------------------------------
+ * Final takeaway (remember this)
+ * -------------------------------------------
+ * Multiply from left
+ * Multiply from right
+ * Reset on zero
+ * Track the maximum
+ *
+ * Time Complexity: O(n)
+ * Space Complexity: O(1)
+ */
+
 const maxProductSubArraySolution2 = (arr) => {
   // Initialize maxProduct to the smallest possible safe integer value
   // This will store the maximum product found so far
