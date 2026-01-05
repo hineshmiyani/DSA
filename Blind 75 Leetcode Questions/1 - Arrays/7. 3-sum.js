@@ -7,7 +7,7 @@
 /*
   ✅ Problem Statement: 
 
-  Given an array of N integers, your task is to find unique triplets that add up to give a sum of zero. In short, you need to return an array of all the unique triplets [arr[a], arr[b], arr[c]] such that i!=j, j!=k, k!=i, and their sum is equal to zero.
+  Given an array of N integers, your task is to find unique triplets that add up to give a sum of zero. In short, you need to return an array of all the unique triplets [arr[a], arr[b], arr[c]] such that i!=j, j!=k, k!=i,  and their sum is equal to zero.
 
   Example 1:
   Input: nums = [-1,0,1,2,-1,-4]
@@ -102,6 +102,42 @@ const threeSumSolution2 = (arr, expectedSum) => {
 };
 
 // Optimal Solution
+
+/**
+ * -------------------------------------------
+ * Approach: Sorting + Two Pointer Technique
+ * -------------------------------------------
+ *
+ * Step 1: Sort the array
+ *   Sorting allows us to:
+ *   - Use two pointers efficiently
+ *   - Skip duplicate values easily
+ *
+ * Step 2: Fix one number (arr[i])
+ *   For each index i, treat arr[i] as the first element
+ *   of the triplet.
+ *
+ * Step 3: Find remaining two numbers using two pointers
+ *   - One pointer (j) starts just after i
+ *   - Another pointer (k) starts from the end
+ *
+ * Step 4: Move pointers based on sum comparison
+ *   - If sum < expectedSum → move left pointer right
+ *   - If sum > expectedSum → move right pointer left
+ *   - If sum === expectedSum → record triplet
+ *
+ * Step 5: Skip duplicates
+ *   - Skip duplicate arr[i]
+ *   - Skip duplicate arr[j] and arr[k]
+ *
+ * ---------------------------------
+ * Simple Intuition (one-liner)
+ * ---------------------------------
+ * Fix one number, then use two fingers from both ends to find the other two numbers that complete the sum — skipping duplicates along the way.
+ *
+ * Time Complexity: O(n²)
+ * Space Complexity: O(1) extra space (output excluded)
+ */
 const threeSumSolution3 = (arr, expectedSum) => {
   // Initialize an array to store the unique triplets.
   const tripletsArr = [];
