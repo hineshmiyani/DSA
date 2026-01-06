@@ -53,6 +53,35 @@ const maxAreaSolution1 = (height) => {
 };
 
 // Optimal Solution
+
+/**
+ * ------------------------------------------------------------
+ * Approach: Two Pointer Technique
+ * ------------------------------------------------------------
+ *
+ * Step 1: Start with the widest container
+ *   - Place one pointer at the beginning
+ *   - Place another pointer at the end
+ *
+ * Step 2: Calculate area using current pointers
+ *
+ * Step 3: Move ONLY the pointer pointing to the SHORTER line
+ *   - The shorter line limits the height of the container
+ *   - Moving the taller line cannot increase area
+ *
+ * Step 4: Repeat until pointers meet
+ *
+ * ------------------------------------------------------------
+ *
+ * Why this works:
+ * - Width decreases as pointers move inward
+ * - To possibly increase area, height MUST increase
+ * - Only moving the shorter line gives a chance to find taller height
+ *
+ * Time Complexity: O(n)
+ * Space Complexity: O(1)
+ */
+
 /**
  * Function to calculate the maximum area of water that can be contained
  * between two lines from the given array of heights.
