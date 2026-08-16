@@ -5,24 +5,27 @@
  * Hashing / Set
  *
  * Core Idea:
- * Use a Set to keep track of numbers that have already appeared.
+ * Create a Set from the array.
  *
- * While traversing the array:
- * - If the current number already exists in the Set, we found a duplicate.
- * - Otherwise, add the number to the Set and continue.
+ * A Set only stores unique values, so if the array contains duplicates,
+ * the size of the Set will be smaller than the original array length.
  *
  * Key Trick:
- * A Set only stores unique values, so checking `has()` tells us
- * whether the current number has appeared before.
+ * Compare:
+ *
+ *     new Set(nums).size
+ *          vs
+ *     nums.length
+ *
+ * If the Set size is smaller, duplicate values were removed.
  *
  * Time Complexity:
  * O(n)
- * - We traverse the array only once.
- * - Set `has()` and `add()` are O(1) on average.
+ * - Creating the Set requires traversing all elements.
  *
  * Space Complexity:
  * O(n)
- * - In the worst case, all numbers are unique and are stored in the Set.
+ * - In the worst case, all elements are unique and stored in the Set.
  *
  * ------------------------------------------------------------
  *
@@ -42,7 +45,8 @@
  * true
  *
  * Explanation:
- * The number `1` appears twice.
+ * The original array has 4 elements, but the Set contains only
+ * 3 unique elements because `1` appears twice.
  *
  * Example 2:
  *
@@ -53,84 +57,100 @@
  * false
  *
  * Explanation:
- * Every number appears exactly once.
+ * The array contains 4 unique elements, so the Set also has 4 elements.
  *
  * ------------------------------------------------------------
  *
  * APPROACH:
- * HashSet / Set
+ * Set Size Comparison
  *
  * Step 1:
- * Create an empty Set called `seenNumbers`.
+ * Convert the entire array into a Set.
  *
- * It will store all numbers that we have already encountered.
+ * A Set automatically removes duplicate values.
  *
  * Step 2:
- * Traverse every number in the array.
+ * Compare the size of the Set with the original array length.
+ *
+ * If:
+ *
+ *     Set size < Array length
+ *
+ * Then at least one duplicate existed.
+ *
+ * If:
+ *
+ *     Set size === Array length
+ *
+ * Then every element was unique.
  *
  * Step 3:
- * For each number, check whether it already exists in the Set.
- *
- * If it exists:
- *     We have encountered this number before, so a duplicate exists.
- *     Immediately return `true`.
- *
- * If it does not exist:
- *     Add the number to the Set and continue searching.
- *
- * Step 4:
- * If we finish traversing the entire array without finding a duplicate,
- * return `false`.
+ * Return the result of this comparison directly.
  *
  * ------------------------------------------------------------
  *
  * WHY THIS WORKS:
  *
- * The Set keeps track of every number we have already seen.
+ * The original array contains every element, including duplicates.
+ *
+ * The Set contains only unique elements.
+ *
+ * Therefore:
+ *
+ * If duplicates exist:
+ *
+ *     nums.length > new Set(nums).size
+ *
+ * If no duplicates exist:
+ *
+ *     nums.length === new Set(nums).size
  *
  * Example:
  *
  * nums = [1, 2, 3, 1]
  *
- * Start:
- * Set = {}
+ * nums.length = 4
  *
- * Read 1:
- * 1 is not present -> add 1
- * Set = {1}
+ * new Set(nums) = {1, 2, 3}
  *
- * Read 2:
- * 2 is not present -> add 2
- * Set = {1, 2}
+ * new Set(nums).size = 3
  *
- * Read 3:
- * 3 is not present -> add 3
- * Set = {1, 2, 3}
+ * 3 < 4 -> true
  *
- * Read 1:
- * 1 is already present -> duplicate found
- *
- * Therefore, return `true`.
+ * Therefore, a duplicate exists.
  *
  * ------------------------------------------------------------
  *
  * SIMPLE INTUITION:
  *
- * Keep a record of everything you've already seen.
+ * Remove duplicates using a Set.
  *
- * See the same number again -> duplicate found.
+ * If the size becomes smaller, duplicates existed.
  *
  * ------------------------------------------------------------
  *
  * INTERVIEW TIP:
  *
- * A brute-force solution would compare every pair of numbers,
- * resulting in O(n²) time.
+ * This is a very concise alternative to manually maintaining a Set
+ * while traversing the array.
  *
- * Sorting the array first would take O(n log n).
+ * Manual approach:
  *
- * Using a Set allows us to solve the problem in O(n) time
- * with O(n) additional space.
+ *     for each number:
+ *         if already seen -> duplicate
+ *         otherwise add it
+ *
+ * Set-size approach:
+ *
+ *     unique count < original count -> duplicate exists
+ *
+ * Both approaches have:
+ *
+ * Time: O(n)
+ * Space: O(n)
+ *
+ * The Set-size solution is shorter, while the manual approach can be
+ * easier to explain when discussing the algorithm step-by-step.
  */
 
 /**
@@ -139,28 +159,11 @@
  */
 var containsDuplicate = function(nums) {
 
-    // Store all numbers that have already appeared in the array.
-    const seenNumbers = new Set();
+    // Convert the array into a Set.
+    // A Set automatically keeps only unique values.
+    const uniqueNumbers = new Set(nums);
 
-    // Traverse every number in the array.
-    for (const num of nums) {
-
-        // If the current number already exists in the Set,
-        // we have encountered the same number before.
-        if (seenNumbers.has(num)) {
-
-            // A duplicate exists, so we can immediately return true.
-            return true;
-
-        } else {
-
-            // The number has not appeared before,
-            // so add it to the Set for future duplicate checks.
-            seenNumbers.add(num);
-        }
-    }
-
-    // We checked every number without finding a duplicate,
-    // so all elements are unique.
-    return false;
+    // If the number of unique values is smaller than the original
+    // array length, at least one duplicate must have been removed.
+    return uniqueNumbers.size < nums.length;
 };
