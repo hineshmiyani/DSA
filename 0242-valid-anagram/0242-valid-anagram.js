@@ -2,23 +2,36 @@
  * QUICK NOTES — Valid Anagram
  *
  * Pattern:
- * Sorting + String Comparison
+ * Hashing + Character Frequency Counting
  *
  * Core Idea:
- * Two strings are anagrams if they contain the same characters
- * with the same frequencies.
+ * Two strings are anagrams if they contain exactly the same characters
+ * with exactly the same frequencies.
  *
- * By sorting both strings, anagrams will produce the exact same
- * sorted string.
+ * Instead of sorting both strings, we count the frequency of every
+ * character in the first string and then use the second string to
+ * decrease those frequencies.
+ *
+ * If a character does not exist in the frequency map, or its frequency
+ * has already reached 0, then `t` contains an extra occurrence of that
+ * character and cannot be an anagram of `s`.
  *
  * Key Trick:
- * Sort both strings and compare the sorted results.
+ * Use one frequency map:
+ *
+ * 1. Count every character in `s`.
+ * 2. Decrease the count while traversing `t`.
+ * 3. If any count becomes invalid, return `false`.
  *
  * Time Complexity:
- * O(n log n)
+ * O(n)
+ * - We traverse both strings once.
+ * - HashMap operations are O(1) on average.
  *
  * Space Complexity:
- * O(n)
+ * O(k)
+ * - k = number of unique characters.
+ * - For lowercase English letters, this is effectively O(1).
  *
  * ------------------------------------------------------------
  *
@@ -27,7 +40,10 @@
  * Given two strings `s` and `t`, return `true` if `t` is an anagram
  * of `s`, and `false` otherwise.
  *
- * Example:
+ * Anagrams contain the same characters with the same frequencies,
+ * but the characters can appear in a different order.
+ *
+ * Example 1:
  *
  * Input:
  * s = "anagram"
@@ -36,51 +52,103 @@
  * Output:
  * true
  *
+ * Explanation:
+ * Both strings contain the same characters with the same frequencies.
+ *
+ * Example 2:
+ *
+ * Input:
+ * s = "rat"
+ * t = "car"
+ *
+ * Output:
+ * false
+ *
+ * Explanation:
+ * `t` contains `c`, which does not exist in `s`.
+ *
  * ------------------------------------------------------------
  *
  * APPROACH:
- * Sort Both Strings
+ * Character Frequency Map
  *
  * Step 1:
  * Check whether both strings have the same length.
  *
- * If their lengths are different, they cannot be anagrams.
+ * Anagrams must contain exactly the same number of characters.
+ * If their lengths are different, immediately return `false`.
  *
  * Step 2:
- * Sort the characters of `s`.
+ * Create a HashMap called `characterFrequency`.
+ *
+ * The key will be a character, and the value will be the number
+ * of times that character appears in `s`.
+ *
+ * Example:
+ *
+ * s = "anagram"
+ *
+ * characterFrequency:
+ * {
+ *     a: 3,
+ *     n: 1,
+ *     g: 1,
+ *     r: 1,
+ *     m: 1
+ * }
  *
  * Step 3:
- * Sort the characters of `t`.
+ * Traverse every character of `s` and increment its frequency.
  *
  * Step 4:
- * Compare the two sorted strings.
+ * Traverse every character of `t`.
  *
- * If they are equal, both strings contain the same characters
- * with the same frequencies.
+ * For each character:
+ *
+ * - If the character does not exist in the map, return `false`.
+ * - If its frequency is already 0, return `false`.
+ * - Otherwise, decrease its frequency by 1.
+ *
+ * Step 5:
+ * If every character in `t` can successfully consume a matching
+ * character from `s`, return `true`.
  *
  * ------------------------------------------------------------
  *
  * WHY THIS WORKS:
  *
- * The order of characters does not matter for anagrams.
- *
- * Sorting both strings puts their characters into the same order.
+ * The frequency map represents how many occurrences of each character
+ * are still available from `s`.
  *
  * Example:
  *
- * "anagram" -> "aaagmnr"
- * "nagaram" -> "aaagmnr"
+ * s = "anagram"
+ * t = "nagaram"
  *
- * Since both sorted strings are identical, they are anagrams.
+ * After counting `s`:
+ *
+ * a -> 3
+ * n -> 1
+ * g -> 1
+ * r -> 1
+ * m -> 1
+ *
+ * While processing `t`, every matching character decreases its count.
+ *
+ * Eventually, all required characters from `t` can be matched against
+ * characters from `s`.
+ *
+ * If `t` contains a character that does not exist in `s`, or contains
+ * it more times than `s`, we immediately return `false`.
  *
  * ------------------------------------------------------------
  *
  * SIMPLE INTUITION:
  *
- * Sort both strings.
+ * Count what `s` has, then use `t` to consume those characters.
  *
- * Same sorted string -> Anagram.
- * Different sorted string -> Not an anagram.
+ * If `t` ever asks for a character that is unavailable,
+ * they are not anagrams.
  *
  * ------------------------------------------------------------
  *
@@ -91,17 +159,15 @@
  * 1. Sorting:
  *    Sort both strings and compare them.
  *    Time: O(n log n)
- *    Space: O(n)
  *
- * 2. Character Frequency Counting:
- *    Count how many times each character appears in both strings
- *    and compare their frequencies.
+ * 2. Frequency Counting:
+ *    Count characters and compare their frequencies.
  *    Time: O(n)
- *    Space: O(1) for a fixed lowercase English alphabet.
  *
- * The sorting approach is simpler and easier to implement.
- * The frequency-counting approach is more efficient when the input
- * is restricted to lowercase English letters.
+ * Frequency counting is more efficient because it avoids sorting.
+ *
+ * Also, the length check is important because anagrams must have
+ * the same number of characters.
  */
 
 /**
@@ -117,19 +183,43 @@ var isAnagram = function(s, t) {
         return false;
     }
 
-    // Sort all characters of the first string alphabetically.
+    // Store the frequency of every character in the first string.
     //
     // Example:
-    // "anagram" -> "aaagmnr"
-    const sortedStringS = s.split("").sort().join("");
+    // "anagram" -> { a: 3, n: 1, g: 1, r: 1, m: 1 }
+    const characterFrequency = new Map();
 
-    // Sort all characters of the second string alphabetically.
-    //
-    // Example:
-    // "nagaram" -> "aaagmnr"
-    const sortedStringT = t.split("").sort().join("");
+    // Count how many times each character appears in `s`.
+    for (const char of s) {
 
-    // If both sorted strings are identical, they contain the same
-    // characters with the same frequencies.
-    return sortedStringS === sortedStringT;
+        // Get the current frequency of the character.
+        // If the character does not exist yet, use 0.
+        // Then increase its frequency by 1.
+        characterFrequency.set(
+            char,
+            (characterFrequency.get(char) || 0) + 1
+        );
+    }
+
+    // Traverse the second string and consume the character frequencies.
+    for (const char of t) {
+
+        // If the character does not exist in `s`, or we have already
+        // consumed all occurrences of that character, `t` cannot be
+        // an anagram of `s`.
+        if (!characterFrequency.has(char) || characterFrequency.get(char) === 0) {
+            return false;
+        }
+
+        // Decrease the available frequency because this occurrence
+        // of the character has now been matched.
+        characterFrequency.set(
+            char,
+            characterFrequency.get(char) - 1
+        );
+    }
+
+    // Every character in `t` was successfully matched with a character
+    // from `s`, so the two strings are anagrams.
+    return true;
 };
