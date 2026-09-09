@@ -2,40 +2,37 @@
  * QUICK NOTES — Product of Array Except Self
  *
  * Pattern:
- * Prefix Product + Suffix Product
+ * Prefix Product + Running Suffix Product (O1 Space Solution)
  *
  * Core Idea:
- * For every index, calculate:
- *     product of all elements to the left
- *     ×
- *     product of all elements to the right
+ * Use the result array to first store the product of all elements
+ * to the left of each index.
+ *
+ * Then, traverse from right to left and maintain a running
+ * suffix product. Multiply it with the existing prefix product
+ * to get the final answer.
  *
  * Example:
  * nums = [1, 2, 3, 4]
  *
- * Prefix Products:
- * [1, 1, 2, 6]
+ * After Prefix Product:
+ * result = [1, 1, 2, 6]
  *
- * Suffix Products:
- * [24, 12, 4, 1]
- *
- * Result:
- * [24, 12, 8, 6]
+ * After Suffix Product:
+ * result = [24, 12, 8, 6]
  *
  * Key Trick:
- * The product except self can be split into two independent parts:
- *
- *     left product × right product
+ * We don't need a separate suffix array.
+ * `suffixProduct` keeps track of the product of all elements
+ * to the right of the current index.
  *
  * Time / Space Complexity:
  * Time: O(n)
- * Space: O(n)
+ * Space: O(1) extra space
  *
  * Note:
- * This solution uses O(n) extra space.
- * It can be optimized to O(1) extra space by using the output array
- * to store the prefix products and calculating suffix products on
- * the second pass.
+ * The `result` array does not count as extra space because it is
+ * required as the output array.
  */
 
 /**
@@ -45,8 +42,9 @@
  *
  * Rules:
  * - Do not use division.
- * - Each result[i] should contain the product of all elements except nums[i].
+ * - Each result[i] should contain the product of every element except nums[i].
  * - The solution should run in O(n) time.
+ * - Use O(1) extra space.
  *
  * Example:
  * nums = [1, 2, 3, 4]
@@ -56,34 +54,41 @@
  *
  * ------------------------------------------------------------
  *
- * Approach: Prefix Product + Suffix Product
- * -----------------------------------------
+ * Approach: Prefix Product + Running Suffix Product
+ * -------------------------------------------------
  *
- * Step 1: Build the prefix product array.
- *   - prefixProduct[i] stores the product of all elements before index i.
- *   - For example:
- *       [1, 2, 3, 4]
- *       [1, 1, 2, 6]
+ * Step 1: Build prefix products inside the result array.
+ *   - result[i] stores the product of all elements before index i.
+ *   - For [1, 2, 3, 4]:
+ *       result = [1, 1, 2, 6]
  *
- * Step 2: Build the suffix product array.
- *   - suffixProduct[i] stores the product of all elements after index i.
- *   - For example:
- *       [1, 2, 3, 4]
- *       [24, 12, 4, 1]
+ * Step 2: Traverse from right to left.
+ *   - Maintain a running `suffixProduct`.
+ *   - `suffixProduct` represents the product of all elements
+ *     after the current index.
  *
- * Step 3: Multiply the prefix and suffix products.
- *   - prefixProduct[i] × suffixProduct[i]
+ * Step 3: Combine both sides.
+ *   - result[i] already contains the prefix product.
+ *   - Multiply it by suffixProduct.
  *   - This gives the product of every element except nums[i].
+ *
+ * Step 4: Update suffixProduct.
+ *   - Include nums[i + 1] in suffixProduct before calculating result[i].
+ *   - This ensures suffixProduct contains every element to the
+ *     right of the current index.
  *
  * ------------------------------------------------------------
  *
  * Why this works:
- * - Everything before nums[i] is stored in prefixProduct[i].
- * - Everything after nums[i] is stored in suffixProduct[i].
- * - Multiplying them gives the product of every element except nums[i].
+ * - result[i] stores the product of everything to the left.
+ * - suffixProduct stores the product of everything to the right.
+ * - Multiplying them gives the product of everything except nums[i].
+ * - We reuse the result array instead of creating separate
+ *   prefix and suffix arrays.
  *
  * Simple Intuition:
- * Product Except Self = Product on the left × Product on the right.
+ * Store the left product in result, then multiply it by the
+ * running right product while traversing from right to left.
  */
 
 /**
@@ -92,38 +97,36 @@
  */
 var productExceptSelf = function(nums) {
 
-    // Stores the product of all elements before the current index.
-    // Example: [1, 1, 2, 6]
-    const prefixProduct = new Array(nums.length).fill(1);
+    // Store the product of all elements before each index.
+    // Example: [1, 2, 3, 4] → [1, 1, 2, 6]
+    const result = new Array(nums.length).fill(1);
 
-    // Stores the product of all elements after the current index.
-    // Example: [24, 12, 4, 1]
-    const suffixProduct = new Array(nums.length).fill(1);
-
-    // Build the prefix product array.
+    // Build the prefix products.
     for (let i = 1; i < nums.length; i++) {
 
-        // Everything before nums[i] is the previous prefix product
-        // multiplied by the element immediately before nums[i].
-        prefixProduct[i] = prefixProduct[i - 1] * nums[i - 1];
+        // result[i] contains the product of all elements
+        // before the current index.
+        result[i] = result[i - 1] * nums[i - 1];
     }
 
-    // Build the suffix product array.
+    // Stores the product of all elements to the right
+    // of the current index.
+    let suffixProduct = 1;
+
+    // Traverse from right to left so we can maintain
+    // the product of elements on the right.
     for (let i = nums.length - 2; i >= 0; i--) {
 
-        // Everything after nums[i] is the next suffix product
-        // multiplied by the element immediately after nums[i].
-        suffixProduct[i] = suffixProduct[i + 1] * nums[i + 1];
+        // Include the element immediately to the right
+        // in the running suffix product.
+        suffixProduct = suffixProduct * nums[i + 1];
+
+        // result[i] already contains the prefix product.
+        // Multiply it by the suffix product to get
+        // the product of every element except nums[i].
+        result[i] = result[i] * suffixProduct;
     }
 
-    // Combine the products from both sides.
-    for (let i = 0; i < nums.length; i++) {
-
-        // Product except nums[i] =
-        // product of elements before i × product of elements after i.
-        prefixProduct[i] = prefixProduct[i] * suffixProduct[i];
-    }
-
-    // prefixProduct now contains the final answer.
-    return prefixProduct;
+    // Return the final product for every index.
+    return result;
 };
