@@ -19,9 +19,10 @@ var isValidSudoku = function (board) {
                 continue;
             }
 
-            const squaresKey = `${Math.floor(i / 3)},${Math.floor(j / 3)}`
+            // const squareKey = `${Math.floor(i / 3)},${Math.floor(j / 3)}`
+            const squareKey = Math.floor(i/3) * 3 + Math.floor(j/3);
 
-            if (rows.get(i)?.has(val) || cols.get(j)?.has(val) || squares.get(squaresKey)?.has(val)) {
+            if (rows.get(i)?.has(val) || cols.get(j)?.has(val) || squares.get(squareKey)?.has(val)) {
                 return false;
             }
 
@@ -35,10 +36,10 @@ var isValidSudoku = function (board) {
             }
             cols.get(j).add(val);
 
-            if (!squares.has(squaresKey)) {
-                squares.set(squaresKey, new Set());
+            if (!squares.has(squareKey)) {
+                squares.set(squareKey, new Set());
             }
-            squares.get(squaresKey).add(val);
+            squares.get(squareKey).add(val);
         }
 
     }
