@@ -3,7 +3,7 @@
  * @return {boolean}
  */
 var isValidSudoku = function (board) {
-    debugger; const rows = new Map();
+    const rows = new Map();
     const cols = new Map();
     const squares = new Map();
 
