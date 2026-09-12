@@ -16,9 +16,7 @@ var longestConsecutive = function (nums) {
 
         if (!numsSet.has(currentNum - 1)) {
 
-            numsSet.delete()
             while (numsSet.has(currentNum + 1)) {
-                numsSet.delete(currentNum + 1);
                 
                 currentSequence = currentSequence + 1;
                 currentNum = currentNum + 1;
