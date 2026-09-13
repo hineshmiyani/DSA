@@ -2,36 +2,44 @@
  * QUICK NOTES — Longest Consecutive Sequence
  *
  * Pattern:
- * Sorting + Greedy / Sequence Tracking
+ * Hash Set + Sequence Expansion
  *
  * Core Idea:
- * Sort the numbers first so consecutive values appear next to each other.
- * Then scan the sorted array and keep track of the current consecutive
- * streak and the longest streak found so far.
+ * Store every number in a Set for O(1) average-time lookups.
+ * A number can only be the beginning of a consecutive sequence if
+ * its previous number does not exist in the Set.
  *
  * Key Trick:
- * Skip duplicate numbers because duplicates should not increase the
- * consecutive sequence length.
+ * Only start counting when:
+ *
+ *     !numberSet.has(currentNumber - 1)
+ *
+ * This ensures that every consecutive sequence is processed only once,
+ * starting from its smallest number.
  *
  * Example:
  * nums = [100, 4, 200, 1, 3, 2]
  *
- * After sorting:
- * [1, 2, 3, 4, 100, 200]
+ * Set:
+ * {100, 4, 200, 1, 3, 2}
  *
- * Longest consecutive sequence:
- * [1, 2, 3, 4] → length = 4
+ * Sequence starts:
+ * 1 → 2 → 3 → 4
+ *
+ * Length:
+ * 4
  *
  * Time Complexity:
- * O(n log n)
+ * O(n)
  *
- * Sorting takes O(n log n), and the single scan afterward takes O(n).
- * Therefore, the overall complexity is O(n log n).
+ * Creating the Set takes O(n), and each number is processed as part of
+ * a consecutive sequence. Although the nested while loop exists, every
+ * number is visited only a constant number of times across the algorithm.
  *
  * Space Complexity:
- * O(log n) to O(n), depending on the JavaScript sorting implementation.
- * The algorithm itself uses O(1) extra space apart from the sorting
- * implementation.
+ * O(n)
+ *
+ * The Set stores all n numbers.
  */
 
 /**
@@ -39,14 +47,11 @@
  * Given an unsorted array of integers, return the length of the longest
  * consecutive elements sequence.
  *
- * A consecutive sequence means every number is exactly 1 greater than
- * the previous number.
+ * A consecutive sequence contains numbers where each number is exactly
+ * 1 greater than the previous number.
  *
  * Example:
  * nums = [100, 4, 200, 1, 3, 2]
- *
- * Sorted:
- * [1, 2, 3, 4, 100, 200]
  *
  * Longest consecutive sequence:
  * [1, 2, 3, 4]
@@ -56,75 +61,68 @@
  *
  * ------------------------------------------------------------
  *
- * Approach: Sorting + Sequence Tracking
- * -------------------------------------
+ * Approach: Hash Set + Sequence Expansion
+ * ----------------------------------------
  *
- * Step 1: Sort the array.
- *   - Sorting places consecutive numbers next to each other.
- *   - Example: [100, 4, 200, 1, 3, 2]
- *     becomes [1, 2, 3, 4, 100, 200].
+ * Step 1: Store all numbers in a Set.
+ *   - Set provides O(1) average-time lookup.
+ *   - This allows us to quickly check whether a number exists.
  *
- * Step 2: Track the current consecutive streak.
- *   - If the next number is exactly currentNumber + 1,
- *     increase the current streak.
+ * Step 2: Check whether the current number is a sequence start.
+ *   - A number is the start of a sequence if currentNumber - 1
+ *     does not exist in the Set.
+ *   - If the previous number exists, the current number belongs to
+ *     an already existing sequence, so we skip it.
  *
- * Step 3: Ignore duplicates.
- *   - A duplicate number does not extend the sequence.
- *   - Example: [1, 2, 2, 3] should still have a streak of 3.
+ * Step 3: Expand the sequence.
+ *   - Starting from the smallest number, check whether the next number
+ *     exists in the Set.
+ *   - Continue increasing the number while consecutive values exist.
  *
- * Step 4: Reset when the sequence breaks.
- *   - If the next number is not consecutive, start a new streak
- *     from the current number.
- *
- * Step 5: Keep the longest streak found.
- *   - Compare currentStreak with longestStreak after each iteration.
+ * Step 4: Track the sequence length.
+ *   - currentStreak stores the length of the sequence currently being
+ *     explored.
+ *   - longestStreak stores the longest sequence found so far.
  *
  * ------------------------------------------------------------
  *
  * Why this works:
- * - Sorting puts potential consecutive numbers next to each other.
- * - Every consecutive pair increases currentStreak by 1.
- * - Duplicate values are ignored so they do not incorrectly increase
- *   the sequence length.
- * - When a gap appears, the current streak starts over.
- * - longestStreak always stores the best sequence found so far.
+ * - Every number is stored in the Set for fast lookup.
+ * - We only begin a sequence from its smallest number.
+ * - This prevents repeatedly scanning the same sequence.
+ * - The while loop expands each sequence from its starting point.
+ * - longestStreak keeps the maximum length found.
  *
  * Simple Intuition:
- * Sort the numbers, walk from left to right, and count how long the
- * current consecutive run continues.
+ * Put everything in a Set, find where each sequence starts, and keep
+ * moving forward while consecutive numbers exist.
  */
 
 /**
  * @param {number[]} nums
  * @return {number}
  */
-var longestConsecutive = function(nums) {
+var longestConsecutive = function (nums) {
     if (nums.length === 0) return 0;
 
-    const sortedNumbers = nums.sort((a, b) => a - b);
+    const numberSet = new Set(nums);
 
     let longestStreak = 1;
-    let currentStreak = 1;
 
-    for (let index = 0; index < sortedNumbers.length - 1; index++) {
-        const currentNumber = sortedNumbers[index];
-        const nextNumber = sortedNumbers[index + 1];
+    for (let currentNumber of numberSet) {
+        // Only start counting when currentNumber is the beginning of a sequence.
+        if (!numberSet.has(currentNumber - 1)) {
+            let currentStreak = 1;
 
-        // Ignore duplicates because they do not extend the sequence.
-        if (currentNumber === nextNumber) {
-            continue;
+            // Keep expanding while the next consecutive number exists.
+            while (numberSet.has(currentNumber + 1)) {
+                currentStreak++;
+                currentNumber++;
+            }
+
+            // Store the longest consecutive streak found so far.
+            longestStreak = Math.max(longestStreak, currentStreak);
         }
-
-        // If the next number is exactly 1 greater, extend the current streak.
-        if (currentNumber + 1 === nextNumber) {
-            currentStreak++;
-        } else {
-            // A gap breaks the consecutive sequence, so start a new streak.
-            currentStreak = 1;
-        }
-
-        // Keep track of the longest consecutive streak found so far.
-        longestStreak = Math.max(longestStreak, currentStreak);
     }
 
     return longestStreak;
