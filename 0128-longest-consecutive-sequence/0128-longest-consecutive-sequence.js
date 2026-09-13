@@ -2,28 +2,30 @@
  * @param {number[]} nums
  * @return {number}
  */
-var longestConsecutive = function (nums) {
+var longestConsecutive = function(nums) {
     if (nums.length === 0) return 0;
 
 
-    const numsSet = new Set(nums);
+    const sortedNums = nums.sort((a, b) => a - b);
 
-    let maxSequence = 1;
 
-    for (let currentNum of numsSet) {
+    let maxSequence = 1; // 4
+    let currentSequence = 1; // 1
 
-        let currentSequence = 1;
+    for (let i = 0; i < sortedNums.length; i++) {
 
-        if (!numsSet.has(currentNum - 1)) {
+        if (sortedNums[i] === sortedNums[i + 1]) {
+            continue;
+        }
 
-            while (numsSet.has(currentNum + 1)) {
-                
-                currentSequence = currentSequence + 1;
-                currentNum = currentNum + 1;
-            }
+        if ((sortedNums[i] + 1) === sortedNums[i + 1]) { 
+            currentSequence = currentSequence + 1; 
+        } else {
+            currentSequence = 1;
         }
 
         maxSequence = Math.max(maxSequence, currentSequence);
+
     }
 
     return maxSequence;
