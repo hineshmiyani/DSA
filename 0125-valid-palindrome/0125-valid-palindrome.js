@@ -4,14 +4,24 @@
  */
 var isPalindrome = function(s) {
     
-    const cleanStr = s.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+
 
     let left = 0;
-    let right = cleanStr.length - 1;
+    let right = s.length - 1;
 
 
     while (left < right) {
-        if (cleanStr.charAt(left) !== cleanStr.charAt(right)) {
+
+        while (left < right && !isAlphaNumeric(s.charAt(left))) {
+            left = left + 1;
+        }
+
+        while (right > left && !isAlphaNumeric(s.charAt(right))) {
+            right = right - 1;
+        }
+
+
+        if (s.toLowerCase().charAt(left) !== s.toLowerCase().charAt(right)) {
             return false;
         }
 
@@ -22,3 +32,7 @@ var isPalindrome = function(s) {
 
     return true;
 };
+
+var isAlphaNumeric = function (char) {
+    return (char >= "A" && char <= "Z") || (char >= "a"  && char <= "z") || (char >= "0"  && char <= "9")
+}
