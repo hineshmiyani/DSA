@@ -6,13 +6,13 @@ var threeSum = function (nums) {
 
     const triplets = [];
 
-    const sortedNums = nums.sort((a, b) => a - b); // [0, 0, 0, 0, 0, 1, 1, 2]
+    nums.sort((a, b) => a - b); // [0, 0, 0, 0, 0, 1, 1, 2]
 
-    const n = sortedNums.length;
+    const n = nums.length;
 
     for (let i = 0; i < n; i++) {
 
-        if (i !== 0 && sortedNums[i] === sortedNums[i - 1]) {
+        if (i !== 0 && nums[i] === nums[i - 1]) {
             continue;
         }
 
@@ -21,7 +21,7 @@ var threeSum = function (nums) {
 
         while (leftPointer < rightPointer) {
 
-            const currentSum = sortedNums[i] + sortedNums[leftPointer] + sortedNums[rightPointer];
+            const currentSum = nums[i] + nums[leftPointer] + nums[rightPointer];
 
             if (currentSum < 0) {
                 leftPointer = leftPointer + 1;
@@ -31,16 +31,16 @@ var threeSum = function (nums) {
 
             } else {
 
-                triplets.push([sortedNums[i], sortedNums[leftPointer], sortedNums[rightPointer]]);
+                triplets.push([nums[i], nums[leftPointer], nums[rightPointer]]);
 
                 leftPointer = leftPointer + 1;
                 rightPonter = rightPointer - 1;
 
-                while (leftPointer < rightPointer && sortedNums[leftPointer] === sortedNums[leftPointer - 1]) {
+                while (leftPointer < rightPointer && nums[leftPointer] === nums[leftPointer - 1]) {
                     leftPointer = leftPointer + 1;
                 }
 
-                while (rightPointer > leftPointer && sortedNums[rightPointer] === sortedNums[rightPointer + 1]) {
+                while (rightPointer > leftPointer && nums[rightPointer] === nums[rightPointer + 1]) {
                     rightPointer = rightPointer - 1;
                 }
             }
