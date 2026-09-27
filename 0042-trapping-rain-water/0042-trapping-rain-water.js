@@ -18,9 +18,7 @@ var trap = function (height) {
 
     for (let i = 0; i < height.length; i++) {
 
-        let currentHeight = height[i];
-
-        const currentTotalTrapWater = Math.min(prefixMax[i], suffixMax[i]) - currentHeight;
+        const currentTotalTrapWater = Math.min(prefixMax[i], suffixMax[i]) - height[i];
 
         if (currentTotalTrapWater > 0) {
             totalTrapWater = totalTrapWater + currentTotalTrapWater;
