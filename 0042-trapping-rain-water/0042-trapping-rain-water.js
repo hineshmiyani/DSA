@@ -2,28 +2,40 @@
  * @param {number[]} height
  * @return {number}
  */
-var trap = function (height) {
-    let totalTrapWater = 0;
+var trap = function(height) {
+    
+    let trapWater = 0;
 
-    const prefixMax = new Array(height.length).fill(0);
-    const suffixMax = new Array(height.length).fill(0);
+    let leftMax = 0;
+    let rightMax = 0;
 
-    for (let i = 1; i < height.length; i++) {
-        prefixMax[i] = Math.max(prefixMax[i - 1], height[i - 1]);
-    }
+    let leftPointer = 0;
+    let rightPointer = height.length - 1;
 
-    for (let i = height.length - 2; i >= 0; i--) {
-        suffixMax[i] = Math.max(suffixMax[i + 1], height[i + 1]);
-    }
+    while (leftPointer < rightPointer) {
+        
+        if (height[leftPointer] < height[rightPointer]) {
 
-    for (let i = 0; i < height.length; i++) {
+            if (height[leftPointer] > leftMax) {
+                leftMax = height[leftPointer];
+            } else {
+                trapWater = trapWater + leftMax - height[leftPointer];
+            }
 
-        const currentTotalTrapWater = Math.min(prefixMax[i], suffixMax[i]) - height[i];
+            leftPointer = leftPointer + 1;
 
-        if (currentTotalTrapWater > 0) {
-            totalTrapWater = totalTrapWater + currentTotalTrapWater;
+        } else {
+            
+            if (height[rightPointer] > rightMax) {
+                rightMax = height[rightPointer];
+            } else {
+                trapWater = trapWater + rightMax - height[rightPointer];
+            }
+
+            rightPointer = rightPointer - 1;
         }
+
     }
 
-    return totalTrapWater;
+    return trapWater;
 };
