@@ -2,30 +2,28 @@
  * QUICK NOTES — Trapping Rain Water
  *
  * Pattern:
- * Prefix & Suffix Maximum
+ * Two Pointers
  *
  * Core Idea:
- * For every index, the amount of water that can be trapped depends on
- * the tallest bar on the left and the tallest bar on the right.
+ * Use two pointers from both ends while tracking the highest wall
+ * encountered from the left and right.
  *
  * Key Trick:
- * Water trapped at an index:
- *     min(leftMax[index], rightMax[index]) - height[index]
- *
- * We precompute the maximum height from the left and right for every index.
+ * Always process the side with the smaller current height.
+ * That side's maximum boundary is already determined by the opposite
+ * pointer because the opposite side has an equal or taller current wall.
  *
  * Time / Space Complexity:
  * Time: O(n)
- * - We traverse the array three times:
- *   once to build leftMax, once to build rightMax,
- *   and once to calculate the trapped water.
+ * - Each pointer moves toward the center and every index is processed
+ *   at most once.
  *
- * Space: O(n)
- * - leftMax and rightMax each store one value for every index.
+ * Space: O(1)
+ * - Only a few variables are used; no extra array is required.
  *
  * Why I struggled:
- * The key is understanding that the water level is limited by the
- * shorter of the tallest left and right boundaries.
+ * The tricky part is understanding why we can safely process the shorter
+ * side without knowing the complete maximum boundary on the other side.
  */
 
 /**
@@ -34,9 +32,9 @@
  * calculate how much rainwater can be trapped between the bars.
  *
  * Rules:
- * - Water can only be trapped when there are boundaries on both sides.
- * - The water level is determined by the shorter boundary.
- * - The current bar's height must be subtracted from the water level.
+ * - Water can only be trapped between taller boundaries.
+ * - The shorter boundary determines how much water can be trapped.
+ * - We need to calculate the total trapped water.
  *
  * Example:
  * height = [4, 2, 0, 3, 2, 5]
@@ -45,32 +43,37 @@
  * 9
  *
  * --------------------
- * Approach: Prefix & Suffix Maximum
+ * Approach: Two Pointers
  * --------------------
  *
- * Step 1: Build leftMax
- * - leftMax[index] stores the tallest bar from index 0 through index.
+ * Step 1: Start two pointers
+ * - leftPointer starts at the beginning.
+ * - rightPointer starts at the end.
  *
- * Step 2: Build rightMax
- * - rightMax[index] stores the tallest bar from index through the end.
+ * Step 2: Track the highest wall from each side
+ * - maxLeftHeight stores the tallest wall encountered from the left.
+ * - maxRightHeight stores the tallest wall encountered from the right.
  *
- * Step 3: Calculate water trapped at each index
- * - The water level is the smaller of leftMax[index] and rightMax[index].
- * - Subtract height[index] to get the amount of trapped water.
+ * Step 3: Process the shorter side
+ * - If the left wall is shorter, process the left side.
+ * - Otherwise, process the right side.
  *
- * Step 4: Add the trapped water
- * - Add the water trapped at each index to the total.
+ * Step 4: Calculate trapped water
+ * - If the current wall is lower than the maximum wall on that side,
+ *   the difference represents trapped water.
+ * - Otherwise, update that side's maximum height.
  *
  * --------------------
  * Why this works:
- * - leftMax gives us the tallest possible boundary on the left.
- * - rightMax gives us the tallest possible boundary on the right.
- * - The shorter boundary determines how high water can rise.
- * - Subtracting the current bar gives the actual water trapped.
+ * - The shorter current boundary determines which side can be processed.
+ * - When the left height is smaller, the right side has a wall at least
+ *   as tall as the left wall, so the left side's trapped water is limited
+ *   by maxLeftHeight.
+ * - The same reasoning applies symmetrically to the right side.
  *
  * Simple Intuition:
- * Find the tallest wall on both sides of each position;
- * the shorter wall determines how much water can sit there.
+ * Always process the shorter wall because the shorter side determines
+ * how much water can be trapped there.
  */
 
 /**
@@ -79,60 +82,44 @@
  */
 var trap = function (height) {
 
-    if (height.length === 0) return 0;
-
     let totalWaterTrapped = 0;
 
-    const leftMax = new Array(height.length);
-    const rightMax = new Array(height.length);
+    let maxLeftHeight = 0;
+    let maxRightHeight = 0;
 
-    leftMax[0] = height[0];
+    let leftPointer = 0;
+    let rightPointer = height.length - 1;
 
-    /**
-     * Build the prefix maximum.
-     *
-     * At every index, leftMax[index] represents the tallest bar
-     * encountered from the beginning of the array up to this index.
-     */
-    for (let index = 1; index < height.length; index++) {
-        leftMax[index] = Math.max(
-            leftMax[index - 1],
-            height[index]
-        );
-    }
+    while (leftPointer < rightPointer) {
 
-    const lastIndex = height.length - 1;
+        if (height[leftPointer] < height[rightPointer]) {
 
-    rightMax[lastIndex] = height[lastIndex];
+            /**
+             * The left side is shorter, so its trapped water is determined
+             * by the tallest wall encountered from the left.
+             */
+            if (maxLeftHeight > height[leftPointer]) {
+                totalWaterTrapped += maxLeftHeight - height[leftPointer];
+            } else {
+                maxLeftHeight = height[leftPointer];
+            }
 
-    /**
-     * Build the suffix maximum.
-     *
-     * At every index, rightMax[index] represents the tallest bar
-     * encountered from this index through the end of the array.
-     */
-    for (let index = lastIndex - 1; index >= 0; index--) {
-        rightMax[index] = Math.max(
-            rightMax[index + 1],
-            height[index]
-        );
-    }
+            leftPointer++;
 
-    /**
-     * The water level at each index is determined by the shorter
-     * of the tallest left and right boundaries.
-     *
-     *     water = min(leftMax, rightMax) - height[index]
-     *
-     * Since the current height is included in both arrays,
-     * the formula naturally produces 0 at boundary or peak positions.
-     */
-    for (let index = 0; index < height.length; index++) {
+        } else {
 
-        const waterTrappedAtIndex =
-            Math.min(leftMax[index], rightMax[index]) - height[index];
+            /**
+             * The right side is shorter or equal, so its trapped water
+             * is determined by the tallest wall encountered from the right.
+             */
+            if (maxRightHeight > height[rightPointer]) {
+                totalWaterTrapped += maxRightHeight - height[rightPointer];
+            } else {
+                maxRightHeight = height[rightPointer];
+            }
 
-        totalWaterTrapped += waterTrappedAtIndex;
+            rightPointer--;
+        }
     }
 
     return totalWaterTrapped;
