@@ -16,20 +16,20 @@ var trap = function(height) {
         
         if (height[leftPointer] < height[rightPointer]) {
 
-            if (height[leftPointer] > leftMax) {
-                leftMax = height[leftPointer];
-            } else {
+            if (leftMax > height[leftPointer] ) {
                 trapWater = trapWater + leftMax - height[leftPointer];
+            } else {
+                leftMax = height[leftPointer];
             }
 
             leftPointer = leftPointer + 1;
 
         } else {
             
-            if (height[rightPointer] > rightMax) {
-                rightMax = height[rightPointer];
-            } else {
+            if (rightMax > height[rightPointer]) {
                 trapWater = trapWater + rightMax - height[rightPointer];
+            } else {
+                rightMax = height[rightPointer];
             }
 
             rightPointer = rightPointer - 1;
