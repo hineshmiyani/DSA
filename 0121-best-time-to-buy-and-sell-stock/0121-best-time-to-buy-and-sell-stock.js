@@ -2,28 +2,28 @@
  * QUICK NOTES — Best Time to Buy and Sell Stock
  *
  * Pattern:
- * Two Pointers / Sliding Window
+ * One Pass / Greedy
  *
  * Core Idea:
- * Keep track of the lowest price seen so far as the buying price.
- * For each day, calculate the profit we would get by selling on that day.
+ * Track the lowest stock price seen so far and calculate the
+ * potential profit by selling at the current day's price.
  *
  * Key Trick:
- * If today's price is lower than the current buying price, move the
- * buying pointer to today because this gives us a better opportunity
- * to maximize future profit.
+ * Update the lowest buying price BEFORE calculating the profit.
+ * This ensures we always use the cheapest price seen so far.
  *
  * Time / Space Complexity:
  * Time: O(n)
- * We traverse the prices array once, processing each price exactly once.
+ * We traverse the prices array exactly once, processing each day's
+ * price in constant time.
  *
  * Space: O(1)
- * We only use a few variables regardless of the input size.
+ * We only use a fixed number of variables, regardless of input size.
  *
  * Why I struggled:
- * The key is understanding why we only move the buying pointer when
- * we find a lower price. A lower buying price can only improve the
- * profit for future selling days.
+ * The important insight is that we don't need to check every
+ * possible buy and sell combination. We only need to remember
+ * the lowest price encountered so far.
  */
 
 /**
@@ -44,36 +44,33 @@
  * 5
  *
  * --------------------------------
- * Approach: Two Pointers
+ * Approach: Greedy (One Pass)
  *
  * Step 1:
- * Start the buy pointer at the first day and the sell pointer at
- * the second day.
+ * Initialize the lowest buying price with the maximum safe integer
+ * and maximum profit with 0.
  *
  * Step 2:
- * If the selling price is higher than the buying price, calculate
- * the current profit and update the maximum profit.
+ * Traverse the prices array and update the lowest buying price
+ * whenever we encounter a cheaper stock price.
  *
  * Step 3:
- * If the selling price is lower than the buying price, move the
- * buy pointer to the current sell day because we found a cheaper
- * day to buy.
+ * Calculate the potential profit by selling at the current price
+ * and buying at the lowest price seen so far.
  *
  * Step 4:
- * Move the sell pointer forward until every possible selling day
- * has been considered.
+ * Update the maximum profit if the current profit is greater.
  *
  * --------------------------------
  * Why this works:
- * - The buy pointer always represents the lowest useful buying price
- *   seen so far.
- * - Every later price is considered as a possible selling price.
- * - Therefore, every valid buy → sell combination is represented
- *   by the current pointers.
+ * - The lowest buying price represents the cheapest opportunity
+ *   encountered before or on the current day.
+ * - Every day's price is considered as a potential selling price.
+ * - Therefore, we can find the maximum possible profit in one pass.
  *
  * Simple Intuition:
- * Buy at the cheapest price seen so far and check how much profit
- * you can make by selling at every later price.
+ * Keep remembering the cheapest buying price and check how much
+ * profit you can make by selling at today's price.
  */
 
 /**
@@ -82,31 +79,17 @@
  */
 var maxProfit = function(prices) {
 
-    let buyDay = 0;
-    let sellDay = 1;
-
     let maxProfit = 0;
+    let lowestBuyPrice = Number.MAX_SAFE_INTEGER;
 
-    while (sellDay < prices.length) {
+    for (let currentDay = 0; currentDay < prices.length; currentDay++) {
 
-        // A higher selling price means we can potentially make a profit.
-        if (prices[buyDay] < prices[sellDay]) {
+        // Keep track of the cheapest buying price seen so far.
+        lowestBuyPrice = Math.min(lowestBuyPrice, prices[currentDay]);
 
-            const currentProfit = prices[sellDay] - prices[buyDay];
+        const currentProfit = prices[currentDay] - lowestBuyPrice;
 
-            maxProfit = Math.max(currentProfit, maxProfit);
-
-        } else {
-
-            /**
-             * We found a cheaper buying price.
-             * Moving the buy pointer here gives us a better starting
-             * point for calculating profit on future selling days.
-             */
-            buyDay = sellDay;
-        }
-
-        sellDay++;
+        maxProfit = Math.max(currentProfit, maxProfit);
     }
 
     return maxProfit;
