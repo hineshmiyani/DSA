@@ -22,7 +22,7 @@ var lengthOfLongestSubstring = function (s) {
         } else {
             
             const index = charSet.get(s[j]);
-            charSet.delete(s[index]);
+            // charSet.delete(s[index]);
 
             if (index >= i) {
                 i = index + 1;
