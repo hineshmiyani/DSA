@@ -8,27 +8,27 @@ var lengthOfLongestSubstring = function (s) {
     if (s.length === 0) return 0;
     if (s.length === 1) return 1;
 
-    // abcabcbb
-    //       ij 
-
     let i = 0;
     let j = i + 1;
 
     let maxLength = 0; // 3
 
-    const charSet = new Set(); // { a, b, c}
-    charSet.add(s[i]);
+    const charSet = new Map(); // { c:1, b:2 }
+    charSet.set(s[i], i);
 
     while (j < s.length) {
         if (!charSet.has(s[j])) {
-            charSet.add(s[j]);
+            charSet.set(s[j], j);
         } else {
-            while (i < s.length && charSet.has(s[j])) {
-                charSet.delete(s[i]);
-                i = i + 1;
+            
+            const index = charSet.get(s[j]);
+            charSet.delete(s[index]);
+
+            if (index >= i) {
+                i = index + 1;
             }
 
-            charSet.add(s[j]);
+            charSet.set(s[j], j);
         }
 
         maxLength = Math.max(maxLength, (j - i) + 1);
