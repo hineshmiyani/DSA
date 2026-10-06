@@ -2,29 +2,29 @@
  * QUICK NOTES — Longest Substring Without Repeating Characters
  *
  * Pattern:
- * Brute Force + Hash Set
+ * Sliding Window + Hash Set
  *
  * Core Idea:
- * Start a new substring from every possible index and expand it
- * character by character until a duplicate character is found.
+ * Maintain a window containing only unique characters.
+ * Expand the window with the right pointer and shrink it from
+ * the left whenever a duplicate character is found.
  *
  * Key Trick:
- * Use a Set to quickly check whether the current character has
- * already appeared in the current substring.
+ * When a duplicate is found, keep removing characters from the
+ * left side until the duplicate is removed from the window.
  *
  * Time / Space Complexity:
- * Time: O(n²)
- * For every starting index, we may scan the remaining characters
- * until we find a duplicate. In the worst case, this results in
- * roughly n × n operations.
+ * Time: O(n)
+ * Each character is added to and removed from the Set at most once,
+ * so the total number of operations is proportional to n.
  *
  * Space: O(n)
- * The Set can store up to n unique characters for a substring.
+ * The Set can contain up to n unique characters in the window.
  *
  * Why I struggled:
- * The important part is understanding that each starting position
- * creates a new substring search, and we stop as soon as a duplicate
- * character is found.
+ * The key is understanding that the left pointer does not restart.
+ * It only moves forward when a duplicate is encountered, allowing
+ * the window to be processed efficiently.
  */
 
 /**
@@ -35,46 +35,44 @@
  * Rules:
  * - A substring must contain consecutive characters.
  * - Every character in the substring must be unique.
- * - Return only the maximum length.
+ * - Return the maximum length of such a substring.
  *
  * Example:
  * s = "abcabcbb"
- *
- * Longest substrings without repeating characters:
- * "abc", "bca", "cab"
  *
  * Output:
  * 3
  *
  * ------------------------------------------------------------
- * Approach: Brute Force
+ * Approach: Sliding Window
  * ------------------------------------------------------------
  *
  * Step 1:
- * Start from every possible character as the beginning of a substring.
+ * Use two pointers to represent the current substring window.
  *
  * Step 2:
- * Use a Set to keep track of characters already seen in the
- * current substring.
+ * Move the right pointer forward and add each new character
+ * to the Set when it has not been seen in the current window.
  *
  * Step 3:
- * Expand the substring one character at a time.
- * If the character has not been seen, add it to the Set.
+ * If the character already exists in the Set, move the left
+ * pointer forward and remove characters until the duplicate
+ * character is no longer present.
  *
  * Step 4:
- * If a duplicate character is found, stop expanding the current
- * substring and move to the next starting position.
+ * After the window contains only unique characters, calculate
+ * its length and update the maximum length found so far.
  *
  * ------------------------------------------------------------
  * Why this works:
- * - Every possible starting position is considered.
- * - Each substring is expanded until it contains a duplicate.
- * - The maximum length found across all starting positions is
- *   the answer.
+ * - The Set always represents the unique characters in the window.
+ * - The left pointer only moves forward, so no character is
+ *   unnecessarily processed from the beginning again.
+ * - Every valid window is considered while expanding the right pointer.
  *
  * Simple Intuition:
- * Try every possible starting point and keep extending until
- * a character repeats.
+ * Expand the window until a duplicate appears, then shrink it
+ * from the left until all characters are unique again.
  */
 
 /**
@@ -83,41 +81,35 @@
  */
 var lengthOfLongestSubstring = function (s) {
 
+    let leftPointer = 0;
+
     let maxSubstringLength = 0;
 
-    for (let startIndex = 0; startIndex < s.length; startIndex++) {
+    const uniqueCharacters = new Set();
 
-        const seenCharacters = new Set();
+    for (let rightPointer = 0; rightPointer < s.length; rightPointer++) {
 
-        let currentSubstringLength = 0;
-
-        for (
-            let currentIndex = startIndex;
-            currentIndex < s.length;
-            currentIndex++
-        ) {
-            /**
-             * If the current character has already appeared,
-             * the current substring can no longer contain only
-             * unique characters.
-             */
-            if (!seenCharacters.has(s[currentIndex])) {
-
-                seenCharacters.add(s[currentIndex]);
-                currentSubstringLength++;
-
-            } else {
-                break;
-            }
+        /**
+         * If the current character already exists in the window,
+         * shrink the window from the left until the duplicate
+         * character is removed.
+         */
+        while (uniqueCharacters.has(s[rightPointer])) {
+            uniqueCharacters.delete(s[leftPointer]);
+            leftPointer++;
         }
 
-        // Keep track of the longest valid substring found so far.
+        // Add the current character after the window becomes valid.
+        uniqueCharacters.add(s[rightPointer]);
+
+        // Calculate the current window length and update the maximum.
+        const currentWindowLength = (rightPointer - leftPointer) + 1;
+
         maxSubstringLength = Math.max(
             maxSubstringLength,
-            currentSubstringLength
+            currentWindowLength
         );
     }
 
-    // Return the length of the longest substring without duplicates.
     return maxSubstringLength;
 };
