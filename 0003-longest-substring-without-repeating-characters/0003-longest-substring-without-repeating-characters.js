@@ -2,29 +2,29 @@
  * QUICK NOTES — Longest Substring Without Repeating Characters
  *
  * Pattern:
- * Sliding Window + Hash Set
+ * Sliding Window + Hash Map
  *
  * Core Idea:
- * Maintain a window containing only unique characters.
- * Expand the window with the right pointer and shrink it from
- * the left whenever a duplicate character is found.
+ * Maintain a sliding window containing unique characters.
+ * Store the latest index of each character in a Map so we can
+ * jump the left pointer directly past a duplicate character.
  *
  * Key Trick:
- * When a duplicate is found, keep removing characters from the
- * left side until the duplicate is removed from the window.
+ * When a duplicate character is found, move the left pointer to
+ * `previousIndex + 1` instead of removing characters one by one.
  *
  * Time / Space Complexity:
  * Time: O(n)
- * Each character is added to and removed from the Set at most once,
- * so the total number of operations is proportional to n.
+ * Each character is processed once, and the left pointer only moves
+ * forward. The Map provides O(1) average-time lookups and updates.
  *
  * Space: O(n)
- * The Set can contain up to n unique characters in the window.
+ * The Map can store up to n unique characters.
  *
  * Why I struggled:
- * The key is understanding that the left pointer does not restart.
- * It only moves forward when a duplicate is encountered, allowing
- * the window to be processed efficiently.
+ * The important part is checking whether the previous occurrence of
+ * a character is still inside the current window before moving the
+ * left pointer.
  */
 
 /**
@@ -44,35 +44,39 @@
  * 3
  *
  * ------------------------------------------------------------
- * Approach: Sliding Window
+ * Approach: Sliding Window + Hash Map
  * ------------------------------------------------------------
  *
  * Step 1:
- * Use two pointers to represent the current substring window.
+ * Use a left pointer to represent the beginning of the current
+ * substring window.
  *
  * Step 2:
- * Move the right pointer forward and add each new character
- * to the Set when it has not been seen in the current window.
+ * Store each character's most recent index in a Map.
  *
  * Step 3:
- * If the character already exists in the Set, move the left
- * pointer forward and remove characters until the duplicate
- * character is no longer present.
+ * When a duplicate character is found, check whether its previous
+ * occurrence is inside the current window.
  *
  * Step 4:
- * After the window contains only unique characters, calculate
- * its length and update the maximum length found so far.
+ * If it is inside the window, move the left pointer directly to
+ * one position after that previous occurrence.
+ *
+ * Step 5:
+ * Update the character's index and calculate the current window
+ * length.
  *
  * ------------------------------------------------------------
  * Why this works:
- * - The Set always represents the unique characters in the window.
- * - The left pointer only moves forward, so no character is
- *   unnecessarily processed from the beginning again.
- * - Every valid window is considered while expanding the right pointer.
+ * - The Map tells us exactly where the duplicate character appeared.
+ * - We can jump the left pointer instead of moving it one character
+ *   at a time.
+ * - The condition `previousIndex >= leftPointer` prevents the left
+ *   pointer from moving backward.
  *
  * Simple Intuition:
- * Expand the window until a duplicate appears, then shrink it
- * from the left until all characters are unique again.
+ * Remember the last position of every character and jump the left
+ * pointer past a duplicate when necessary.
  */
 
 /**
@@ -85,25 +89,34 @@ var lengthOfLongestSubstring = function (s) {
 
     let maxSubstringLength = 0;
 
-    const uniqueCharacters = new Set();
+    const characterLastIndex = new Map();
 
     for (let rightPointer = 0; rightPointer < s.length; rightPointer++) {
 
-        /**
-         * If the current character already exists in the window,
-         * shrink the window from the left until the duplicate
-         * character is removed.
-         */
-        while (uniqueCharacters.has(s[rightPointer])) {
-            uniqueCharacters.delete(s[leftPointer]);
-            leftPointer++;
+        if (!characterLastIndex.has(s[rightPointer])) {
+
+            characterLastIndex.set(s[rightPointer], rightPointer);
+
+        } else {
+
+            const previousIndex = characterLastIndex.get(s[rightPointer]);
+
+            /**
+             * Only move the left pointer if the previous occurrence
+             * is inside the current window.
+             *
+             * If previousIndex is already before leftPointer, that
+             * occurrence is no longer part of the current window.
+             */
+            if (previousIndex >= leftPointer) {
+                leftPointer = previousIndex + 1;
+            }
+
+            characterLastIndex.set(s[rightPointer], rightPointer);
         }
 
-        // Add the current character after the window becomes valid.
-        uniqueCharacters.add(s[rightPointer]);
-
-        // Calculate the current window length and update the maximum.
-        const currentWindowLength = (rightPointer - leftPointer) + 1;
+        const currentWindowLength =
+            (rightPointer - leftPointer) + 1;
 
         maxSubstringLength = Math.max(
             maxSubstringLength,
